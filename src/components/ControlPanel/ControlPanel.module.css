@@ -18,6 +18,13 @@
   margin-bottom: var(--spacing-xs);
 }
 
+.sectionDescription {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
 .animationTypeGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -137,6 +144,16 @@
   border: 1px solid var(--border-color);
   min-width: 50px;
   text-align: center;
+}
+
+.scrubberInfo {
+  margin-top: var(--spacing-xs);
+}
+
+.infoText {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
 }
 
 .settingsGrid {

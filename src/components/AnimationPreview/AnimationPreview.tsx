@@ -8,6 +8,7 @@ export const AnimationPreview: React.FC = () => {
   const boxRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [animationKey, setAnimationKey] = useState(0);
+  const [isScrubbing, setIsScrubbing] = useState(false);
 
   const cubicBezier = generateCubicBezier(state.p1, state.p2);
 
@@ -16,8 +17,20 @@ export const AnimationPreview: React.FC = () => {
     if (boxRef.current) {
       boxRef.current.style.setProperty('--easing', cubicBezier);
       boxRef.current.style.setProperty('--duration', `${state.duration}s`);
+      
+      // Handle timeline scrubbing
+      if (isScrubbing || !state.isPlaying) {
+        // When scrubbing or paused, use animation-delay to show specific frame
+        const delay = -state.scrubPosition * state.duration;
+        boxRef.current.style.setProperty('--delay', `${delay}s`);
+        boxRef.current.style.animationPlayState = 'paused';
+      } else {
+        // When playing normally, remove delay and let animation run
+        boxRef.current.style.removeProperty('--delay');
+        boxRef.current.style.animationPlayState = 'running';
+      }
     }
-  }, [cubicBezier, state.duration]);
+  }, [cubicBezier, state.duration, state.scrubPosition, state.isPlaying, isScrubbing]);
 
   // Restart animation when easing changes
   useEffect(() => {
@@ -27,6 +40,7 @@ export const AnimationPreview: React.FC = () => {
   // Handle play/pause
   const togglePlay = () => {
     dispatch({ type: 'SET_PLAYING', value: !state.isPlaying });
+    setIsScrubbing(false);
   };
 
   // Get animation class based on type
@@ -83,11 +97,9 @@ export const AnimationPreview: React.FC = () => {
         <div
           ref={boxRef}
           key={animationKey}
-          className={`${styles.previewBox} ${getAnimationClass()} ${
-            state.isPlaying ? styles.playing : styles.paused
-          }`}
+          className={`${styles.previewBox} ${getAnimationClass()}`}
           style={{
-            animationPlayState: state.isPlaying ? 'running' : 'paused',
+            animationPlayState: (isScrubbing || !state.isPlaying) ? 'paused' : 'running',
           }}
         />
         

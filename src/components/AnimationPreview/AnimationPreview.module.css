@@ -72,22 +72,27 @@
 
 .animateTranslateX {
   animation: translateXAnimation var(--duration, 1s) var(--easing, ease) infinite alternate;
+  animation-delay: var(--delay, 0s);
 }
 
 .animateScale {
   animation: scaleAnimation var(--duration, 1s) var(--easing, ease) infinite alternate;
+  animation-delay: var(--delay, 0s);
 }
 
 .animateRotate {
   animation: rotateAnimation var(--duration, 1s) var(--easing, ease) infinite alternate;
+  animation-delay: var(--delay, 0s);
 }
 
 .animateOpacity {
   animation: opacityAnimation var(--duration, 1s) var(--easing, ease) infinite alternate;
+  animation-delay: var(--delay, 0s);
 }
 
 .animateCombined {
   animation: combinedAnimation var(--duration, 1s) var(--easing, ease) infinite alternate;
+  animation-delay: var(--delay, 0s);
 }
 
 @keyframes translateXAnimation {

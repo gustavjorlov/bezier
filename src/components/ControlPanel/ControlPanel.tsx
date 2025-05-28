@@ -25,6 +25,8 @@ export const ControlPanel: React.FC = () => {
   const handleScrubChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(event.target.value);
     dispatch({ type: 'SET_SCRUB_POSITION', value });
+    // Pause animation when manually scrubbing
+    dispatch({ type: 'SET_PLAYING', value: false });
   };
 
   return (
@@ -50,6 +52,9 @@ export const ControlPanel: React.FC = () => {
 
       <div className={styles.section}>
         <h4 className={styles.sectionTitle}>Timeline Scrubber</h4>
+        <p className={styles.sectionDescription}>
+          Drag to manually control animation position for frame-by-frame analysis.
+        </p>
         <div className={styles.scrubberContainer}>
           <div className={styles.scrubberTrack}>
             <input
@@ -70,6 +75,11 @@ export const ControlPanel: React.FC = () => {
           <div className={styles.scrubberValue}>
             {Math.round(state.scrubPosition * 100)}%
           </div>
+        </div>
+        <div className={styles.scrubberInfo}>
+          <span className={styles.infoText}>
+            Current position: {(state.scrubPosition * state.duration).toFixed(2)}s / {state.duration}s
+          </span>
         </div>
       </div>
 
