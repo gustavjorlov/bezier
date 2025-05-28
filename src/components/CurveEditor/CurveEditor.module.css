@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.canvas {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-primary);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.canvas:hover {
+  border-color: var(--border-hover);
+}
+
+.canvas:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.coordinates {
+  display: flex;
+  gap: var(--spacing-lg);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.coordinateGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.coordinateLabel {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.coordinateValue {
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  background: var(--bg-tertiary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+} 

@@ -1,0 +1,207 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  font-size: 0.875rem;
+}
+
+.easingInfo,
+.animationInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.label {
+  font-weight: 500;
+  color: var(--text-secondary);
+  min-width: 60px;
+}
+
+.easingValue {
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  background: var(--bg-tertiary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  font-size: 0.8rem;
+}
+
+.animationDescription {
+  color: var(--text-primary);
+}
+
+.previewContainer {
+  position: relative;
+  height: 120px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-md);
+}
+
+.track {
+  position: absolute;
+  top: 50%;
+  left: var(--spacing-md);
+  right: var(--spacing-md);
+  height: 2px;
+  background: var(--border-color);
+  border-radius: 1px;
+  transform: translateY(-50%);
+}
+
+.previewBox {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  border-radius: var(--radius-md);
+  position: relative;
+  z-index: 1;
+  box-shadow: var(--shadow-md);
+}
+
+.animateTranslateX {
+  animation: translateXAnimation var(--duration, 1s) var(--easing, ease) infinite alternate;
+}
+
+.animateScale {
+  animation: scaleAnimation var(--duration, 1s) var(--easing, ease) infinite alternate;
+}
+
+.animateRotate {
+  animation: rotateAnimation var(--duration, 1s) var(--easing, ease) infinite alternate;
+}
+
+.animateOpacity {
+  animation: opacityAnimation var(--duration, 1s) var(--easing, ease) infinite alternate;
+}
+
+.animateCombined {
+  animation: combinedAnimation var(--duration, 1s) var(--easing, ease) infinite alternate;
+}
+
+@keyframes translateXAnimation {
+  from { transform: translateX(0); }
+  to { transform: translateX(200px); }
+}
+
+@keyframes scaleAnimation {
+  from { transform: scale(1); }
+  to { transform: scale(1.5); }
+}
+
+@keyframes rotateAnimation {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes opacityAnimation {
+  from { opacity: 0.3; }
+  to { opacity: 1; }
+}
+
+@keyframes combinedAnimation {
+  from {
+    transform: translateX(0) scale(1) rotate(0deg);
+    opacity: 0.3;
+  }
+  to {
+    transform: translateX(150px) scale(1.2) rotate(180deg);
+    opacity: 1;
+  }
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+}
+
+.playButton {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  min-width: 80px;
+  justify-content: center;
+}
+
+.playButton:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.durationControl {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex: 1;
+  min-width: 200px;
+}
+
+.durationLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.durationSlider {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.durationSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.durationSlider::-webkit-slider-thumb:hover {
+  background: var(--primary-hover);
+  transform: scale(1.1);
+}
+
+.durationValue {
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  min-width: 40px;
+  text-align: center;
+} 
