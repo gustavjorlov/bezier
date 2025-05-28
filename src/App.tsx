@@ -5,7 +5,6 @@ import { AnimationPreview } from './components/AnimationPreview/AnimationPreview
 import { PresetLibrary } from './components/PresetLibrary/PresetLibrary';
 import { ControlPanel } from './components/ControlPanel/ControlPanel';
 import { CodeOutput } from './components/CodeOutput/CodeOutput';
-import { getShareableURL } from './utils/urlManager';
 import { copyToClipboard } from './utils/codeGenerator';
 import styles from './App.module.css';
 
