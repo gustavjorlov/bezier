@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from '@rf-ui-platform/uno';
 import { useEasingState } from '../../hooks/useEasingState';
 import { generateCSS, copyToClipboard } from '../../utils/codeGenerator';
 import styles from './CodeOutput.module.css';
@@ -49,39 +50,26 @@ export const CodeOutput: React.FC = () => {
       <div className={styles.header}>
         <div className={styles.tabs}>
           {Object.entries(formatLabels).map(([format, label]) => (
-            <button
+            <Button
               key={format}
-              className={`${styles.tab} ${
-                activeFormat === format ? styles.active : ''
-              }`}
+              size="small"
+              color={activeFormat === format ? "primary" : "secondary"}
               onClick={() => setActiveFormat(format as CodeFormat)}
             >
               {label}
-            </button>
+            </Button>
           ))}
         </div>
         
-        <button
-          className={`${styles.copyButton} ${copySuccess ? styles.success : ''}`}
+        <Button
+          size="small"
+          color="secondary"
+          startIcon={copySuccess ? "check" : "copy"}
           onClick={handleCopy}
-          disabled={copySuccess}
+          isDisabled={copySuccess}
         >
-          {copySuccess ? (
-            <>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
-              </svg>
-              Copied!
-            </>
-          ) : (
-            <>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-              </svg>
-              Copy
-            </>
-          )}
-        </button>
+          {copySuccess ? "Copied!" : "Copy"}
+        </Button>
       </div>
 
       <div className={styles.codeContainer}>

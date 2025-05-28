@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Button } from '@rf-ui-platform/uno';
 import { useEasingState } from '../../hooks/useEasingState';
 import { generateCubicBezier } from '../../utils/codeGenerator';
 import styles from './AnimationPreview.module.css';
@@ -107,22 +108,14 @@ export const AnimationPreview: React.FC = () => {
       </div>
 
       <div className={styles.controls}>
-        <button
-          className={styles.playButton}
+        <Button
+          size="medium"
+          color="secondary"
+          startIcon={state.isPlaying ? "pause" : "play"}
           onClick={togglePlay}
-          aria-label={state.isPlaying ? 'Pause animation' : 'Play animation'}
         >
-          {state.isPlaying ? (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
-            </svg>
-          ) : (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M8 5v14l11-7z"/>
-            </svg>
-          )}
           {state.isPlaying ? 'Pause' : 'Play'}
-        </button>
+        </Button>
 
         <div className={styles.durationControl}>
           <label htmlFor="duration" className={styles.durationLabel}>

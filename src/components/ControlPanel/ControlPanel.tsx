@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '@rf-ui-platform/uno';
 import { useEasingState } from '../../hooks/useEasingState';
 import { EasingState } from '../../types';
 import styles from './ControlPanel.module.css';
@@ -35,17 +36,14 @@ export const ControlPanel: React.FC = () => {
         <h4 className={styles.sectionTitle}>Animation Type</h4>
         <div className={styles.animationTypeGrid}>
           {animationTypes.map((type) => (
-            <button
+            <Button
               key={type.value}
-              className={`${styles.typeButton} ${
-                state.animationType === type.value ? styles.active : ''
-              }`}
+              size="medium"
+              color={state.animationType === type.value ? "primary" : "secondary"}
               onClick={() => handleAnimationTypeChange(type.value)}
-              title={type.description}
             >
-              <span className={styles.typeLabel}>{type.label}</span>
-              <span className={styles.typeDescription}>{type.description}</span>
-            </button>
+              {type.label}
+            </Button>
           ))}
         </div>
       </div>
