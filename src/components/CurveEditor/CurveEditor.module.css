@@ -11,6 +11,9 @@
   background: var(--bg-primary);
   cursor: pointer;
   transition: border-color 0.2s ease;
+  
+  /* Prevent canvas from being resized by CSS */
+  display: block;
 }
 
 .canvas:hover {

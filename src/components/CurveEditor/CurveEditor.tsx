@@ -18,6 +18,31 @@ export const CurveEditor: React.FC<CurveEditorProps> = ({
   const [isDragging, setIsDragging] = useState<'p1' | 'p2' | null>(null);
   const [dragOffset, setDragOffset] = useState<Point>({ x: 0, y: 0 });
 
+  // Setup canvas for high-DPI displays
+  const setupCanvas = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const dpr = window.devicePixelRatio || 1;
+    
+    // Set the actual canvas size in memory (scaled by device pixel ratio)
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    
+    // Set the CSS size to maintain the intended display size
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    
+    // Scale the drawing context to match the device pixel ratio
+    ctx.scale(dpr, dpr);
+    
+    // Enable crisp rendering
+    ctx.imageSmoothingEnabled = false;
+  }, [width, height]);
+
   // Convert canvas coordinates to bezier coordinates (0-1 range)
   const canvasToEasing = useCallback((canvasX: number, canvasY: number): Point => {
     const padding = 40;
@@ -57,13 +82,16 @@ export const CurveEditor: React.FC<CurveEditorProps> = ({
     const effectiveWidth = width - (padding * 2);
     const effectiveHeight = height - (padding * 2);
 
+    // Enable crisp lines
+    ctx.translate(0.5, 0.5);
+
     // Draw grid
     ctx.strokeStyle = '#f1f5f9';
     ctx.lineWidth = 1;
     
     // Vertical grid lines
     for (let i = 0; i <= 10; i++) {
-      const x = padding + (i / 10) * effectiveWidth;
+      const x = Math.floor(padding + (i / 10) * effectiveWidth);
       ctx.beginPath();
       ctx.moveTo(x, padding);
       ctx.lineTo(x, padding + effectiveHeight);
@@ -72,7 +100,7 @@ export const CurveEditor: React.FC<CurveEditorProps> = ({
     
     // Horizontal grid lines
     for (let i = 0; i <= 10; i++) {
-      const y = padding + (i / 10) * effectiveHeight;
+      const y = Math.floor(padding + (i / 10) * effectiveHeight);
       ctx.beginPath();
       ctx.moveTo(padding, y);
       ctx.lineTo(padding + effectiveWidth, y);
@@ -85,15 +113,18 @@ export const CurveEditor: React.FC<CurveEditorProps> = ({
     
     // X axis
     ctx.beginPath();
-    ctx.moveTo(padding, padding + effectiveHeight);
-    ctx.lineTo(padding + effectiveWidth, padding + effectiveHeight);
+    ctx.moveTo(padding, Math.floor(padding + effectiveHeight));
+    ctx.lineTo(padding + effectiveWidth, Math.floor(padding + effectiveHeight));
     ctx.stroke();
     
     // Y axis
     ctx.beginPath();
-    ctx.moveTo(padding, padding);
-    ctx.lineTo(padding, padding + effectiveHeight);
+    ctx.moveTo(Math.floor(padding), padding);
+    ctx.lineTo(Math.floor(padding), padding + effectiveHeight);
     ctx.stroke();
+
+    // Reset translation
+    ctx.translate(-0.5, -0.5);
 
     // Convert control points to canvas coordinates
     const startPoint = { x: padding, y: padding + effectiveHeight };
@@ -121,6 +152,8 @@ export const CurveEditor: React.FC<CurveEditorProps> = ({
     // Draw bezier curve
     ctx.strokeStyle = '#2563eb';
     ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
     ctx.beginPath();
     ctx.moveTo(startPoint.x, startPoint.y);
     ctx.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, endPoint.x, endPoint.y);
@@ -138,7 +171,8 @@ export const CurveEditor: React.FC<CurveEditorProps> = ({
     // P1 label
     ctx.fillStyle = '#475569';
     ctx.font = '12px -apple-system, BlinkMacSystemFont, sans-serif';
-    ctx.fillText('P1', cp1.x + 12, cp1.y + 4);
+    ctx.textBaseline = 'middle';
+    ctx.fillText('P1', cp1.x + 12, cp1.y);
     
     // P2 control point
     ctx.fillStyle = state.selectedControlPoint === 'p2' ? '#1d4ed8' : '#2563eb';
@@ -148,7 +182,7 @@ export const CurveEditor: React.FC<CurveEditorProps> = ({
     
     // P2 label
     ctx.fillStyle = '#475569';
-    ctx.fillText('P2', cp2.x + 12, cp2.y + 4);
+    ctx.fillText('P2', cp2.x + 12, cp2.y);
 
     // Draw start and end points
     ctx.fillStyle = '#64748b';
@@ -163,10 +197,19 @@ export const CurveEditor: React.FC<CurveEditorProps> = ({
     // Axis labels
     ctx.fillStyle = '#64748b';
     ctx.font = '12px -apple-system, BlinkMacSystemFont, sans-serif';
-    ctx.fillText('0', padding - 15, padding + effectiveHeight + 5);
-    ctx.fillText('1', padding + effectiveWidth + 5, padding + effectiveHeight + 5);
-    ctx.fillText('0', padding - 15, padding + effectiveHeight + 5);
-    ctx.fillText('1', padding - 15, padding + 5);
+    ctx.textBaseline = 'top';
+    ctx.textAlign = 'center';
+    ctx.fillText('0', padding, padding + effectiveHeight + 8);
+    ctx.fillText('1', padding + effectiveWidth, padding + effectiveHeight + 8);
+    
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('0', padding - 8, padding + effectiveHeight);
+    ctx.fillText('1', padding - 8, padding);
+    
+    // Reset text alignment
+    ctx.textAlign = 'start';
+    ctx.textBaseline = 'alphabetic';
   }, [state, width, height, easingToCanvas]);
 
   // Handle mouse down on control points
@@ -271,6 +314,11 @@ export const CurveEditor: React.FC<CurveEditorProps> = ({
     }
   }, [isDragging, dragOffset, canvasToEasing, dispatch]);
 
+  // Initialize canvas on mount and when dimensions change
+  useEffect(() => {
+    setupCanvas();
+  }, [setupCanvas]);
+
   // Redraw when state changes
   useEffect(() => {
     drawCurve();
@@ -313,8 +361,6 @@ export const CurveEditor: React.FC<CurveEditorProps> = ({
     <div className={styles.container}>
       <canvas
         ref={canvasRef}
-        width={width}
-        height={height}
         className={styles.canvas}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}

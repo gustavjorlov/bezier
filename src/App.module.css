@@ -117,15 +117,88 @@ body {
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: var(--spacing-xl);
+  padding: var(--spacing-lg);
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto auto auto;
-  gap: var(--spacing-xl);
+  gap: var(--spacing-lg);
   grid-template-areas:
+    "welcome welcome"
     "editor preview"
     "presets controls"
     "code code";
+}
+
+.welcomeSection {
+  grid-area: welcome;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.welcomeContent {
+  /* max-width: 800px; */
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.welcomeText {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0 0 var(--spacing-lg) 0;
+  text-align: left;
+  flex: 1;
+}
+
+.tips {
+  flex: 1;
+  text-align: left;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-md);
+}
+
+.tipsTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-sm) 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tipsList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tipsList li {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xs);
+  padding-left: var(--spacing-md);
+  position: relative;
+}
+
+.tipsList li:last-child {
+  margin-bottom: 0;
+}
+
+.tipsList li::before {
+  content: '•';
+  color: var(--accent-color);
+  position: absolute;
+  left: 0;
+  font-weight: bold;
 }
 
 .editorSection {
